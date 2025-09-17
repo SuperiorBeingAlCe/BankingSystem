@@ -1,6 +1,23 @@
 spring:
   profiles:
     active: dev
+
+  main:
+    web-application-type: reactive
+
   config:
     import: "optional:configserver:"
- 
+
+  cloud:
+    discovery:
+      enabled: false
+
+eureka:
+  client:
+    enabled: false
+    
+    management:
+  metrics:
+    export:
+      otlp:
+        enabled: false

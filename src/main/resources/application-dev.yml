@@ -15,9 +15,10 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         default_schema: public
 
-  redis:
-    host: localhost
-    port: 6379
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 server:
   port: 8081
