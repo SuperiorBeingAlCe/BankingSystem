@@ -33,4 +33,5 @@ build/
 .vscode/
 
 ### Keys ###
-src/main/resources/keys/jwt.key
+src/main/resources/jwt.key
+src/main/resources/*.pkcs8
