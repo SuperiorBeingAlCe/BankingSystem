@@ -27,7 +27,7 @@
     <mockito.version>5.2.0</mockito.version>
     <testcontainers.version>1.21.3</testcontainers.version>
     <opentelemetry.version>1.54.0</opentelemetry.version>
-    <jackson.version>2.15.2</jackson.version>
+    <jackson.version>2.19.2</jackson.version>
     <jjwt.version>0.11.5</jjwt.version>
 
     <!-- Spring Cloud already present -->
@@ -95,14 +95,8 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-config</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-gateway-server-webflux</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-    </dependency>
+    
+   
 
     <!-- Messaging -->
     <dependency>
@@ -131,10 +125,10 @@
 
     <!-- Jackson (explicit version to match other libs) -->
     <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>${jackson.version}</version>
-    </dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>${jackson.version}</version>
+</dependency>
 
     <!-- JWT (jjwt) - match previous working project -->
     <dependency>

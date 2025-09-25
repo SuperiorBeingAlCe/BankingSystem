@@ -3,7 +3,7 @@ spring:
     active: dev
 
   main:
-    web-application-type: reactive
+    web-application-type: servlet
 
   config:
     import: "optional:configserver:"
@@ -15,9 +15,11 @@ spring:
 eureka:
   client:
     enabled: false
-    
-    management:
+
+management:
   metrics:
     export:
       otlp:
-        enabled: false
+        enabled: true
+        step: 30s                  
+        url: http://localhost:4318/v1/metrics
