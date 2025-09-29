@@ -3,6 +3,7 @@ package com.banking.Banking.auth.service.concretes;
 import java.security.KeyPair;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -31,7 +32,7 @@ public class TokenManager {
 
 	        return Jwts.builder()
 	                .setSubject(String.valueOf(user.getId()))
-	                .claim("roles", user.getRoles()) 
+	                .claim("roles", new ArrayList<>(user.getRoles())) 
 	                .setIssuedAt(Date.from(now))
 	                .setExpiration(Date.from(now.plus(10, ChronoUnit.MINUTES)))
 	                .setId(UUID.randomUUID().toString()) 

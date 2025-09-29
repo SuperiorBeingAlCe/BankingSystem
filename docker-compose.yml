@@ -14,6 +14,10 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          memory: 512m
 
   redis:
     image: redis:7
@@ -21,6 +25,10 @@ services:
     restart: unless-stopped
     ports:
       - "6379:6379"
+    deploy:
+      resources:
+        limits:
+          memory: 256m
 
   mongo:
     image: mongo:7
@@ -31,6 +39,11 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: 12345
     ports:
       - "27017:27017"
+    command: ["--wiredTigerCacheSizeGB", "0.25"] 
+    deploy:
+      resources:
+        limits:
+          memory: 512m
 
 volumes:
   postgres_data:

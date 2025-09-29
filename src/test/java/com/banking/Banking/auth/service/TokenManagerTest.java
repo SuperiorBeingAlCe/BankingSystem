@@ -6,6 +6,8 @@ import static org.junit.Assert.assertThrows;
 
 import java.security.KeyPair;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -56,7 +58,9 @@ public class TokenManagerTest {
 
         Jws<Claims> claims = tokenManager.validateToken(token);
         assertEquals("1", claims.getBody().getSubject());
-        assertEquals(Set.of("ROLE_USER"), claims.getBody().get("roles", Set.class));
+        List<String> rolesList = claims.getBody().get("roles", List.class);
+        Set<String> roles = new HashSet<>(rolesList);
+        assertEquals(Set.of("ROLE_USER"), roles);
     }
 
     @Test
