@@ -45,5 +45,16 @@ services:
         limits:
           memory: 512m
 
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    container_name: banking_otel_collector
+    command: ["--config=/etc/otel-collector-config.yml"]
+    volumes:
+      - ./otel-collector-config.yml:/etc/otel-collector-config.yml
+    ports:
+      - "4317:4317" # gRPC
+      - "4318:4318" # HTTP
+    restart: unless-stopped
+
 volumes:
   postgres_data:
