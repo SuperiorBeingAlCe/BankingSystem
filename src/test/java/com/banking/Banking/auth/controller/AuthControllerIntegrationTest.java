@@ -1,6 +1,7 @@
 package com.banking.Banking.auth.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -91,8 +91,9 @@ public class AuthControllerIntegrationTest {
     void refresh_shouldReturnNewAccessToken() throws Exception {
         RefreshRequest request = new RefreshRequest("refresh123");
 
-        when(refreshTokenManager.findById("refresh123")).thenReturn(Optional.of(refreshToken));
-        when(refreshTokenManager.validate("refresh123")).thenReturn(true);
+        // validateOrThrow void, exception fırlatmazsa başarılı
+        doNothing().when(refreshTokenManager).validateOrThrow("refresh123");
+        when(refreshTokenManager.findByIdOrThrow("refresh123")).thenReturn(refreshToken);
         when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
         when(tokenService.generateAccessToken(testUser)).thenReturn("new-access-token");
 
