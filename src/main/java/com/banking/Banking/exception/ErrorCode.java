@@ -18,7 +18,13 @@ public enum ErrorCode {
 	    EMAIL_ALREADY_EXISTS("1003", "Bu e-posta adresi zaten kayıtlı."),
 	    USER_CREATION_FAILED("1004", "Kullanıcı oluşturulurken hata oluştu."),
 	    USER_UPDATE_FAILED("1005", "Kullanıcı güncellenirken hata oluştu."),
-	    USER_DELETION_FAILED("1006", "Kullanıcı silinirken hata oluştu.");
+	    USER_DELETION_FAILED("1006", "Kullanıcı silinirken hata oluştu."),
+	
+	    // Rol, yetki, kimlik (ilerideki servisler için temel)
+        ROLE_NOT_FOUND("2001", "Rol bulunamadı."),
+        ROLE_ALREADY_EXISTS("2002", "Bu rol zaten mevcut.");
+    
+    
 	
 	
 	   private final String code;
