@@ -3,13 +3,14 @@ package com.banking.Banking.auth.service.concretes;
 import java.security.KeyPair;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.banking.Banking.auth.model.RefreshToken;
+import com.banking.Banking.entity.Role;
 import com.banking.Banking.entity.User;
 
 import io.jsonwebtoken.Claims;
@@ -32,7 +33,9 @@ public class TokenManager {
 
 	        return Jwts.builder()
 	                .setSubject(String.valueOf(user.getId()))
-	                .claim("roles", new ArrayList<>(user.getRoles())) 
+	                .claim("roles", user.getRoles().stream()
+	                        .map(Role::getName)
+	                        .collect(Collectors.toList()))
 	                .setIssuedAt(Date.from(now))
 	                .setExpiration(Date.from(now.plus(10, ChronoUnit.MINUTES)))
 	                .setId(UUID.randomUUID().toString()) 
