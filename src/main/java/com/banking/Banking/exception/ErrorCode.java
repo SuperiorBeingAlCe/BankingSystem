@@ -11,6 +11,7 @@ public enum ErrorCode {
 	    UNAUTHORIZED("0003", "Yetkisiz erişim."),
 	    INTERNAL_SERVER_ERROR("0004", "Sunucu hatası oluştu."),
 	    VALIDATION_FAILED("0005", "Doğrulama hatası."),
+	   
 	    
 	 // Kullanıcıya özel hata kodları (UserManager ile direkt ilgili)
 	    USER_NOT_FOUND("1001", "Kullanıcı bulunamadı."),
@@ -22,9 +23,11 @@ public enum ErrorCode {
 	
 	    // Rol, yetki, kimlik (ilerideki servisler için temel)
         ROLE_NOT_FOUND("2001", "Rol bulunamadı."),
-        ROLE_ALREADY_EXISTS("2002", "Bu rol zaten mevcut.");
+        ROLE_ALREADY_EXISTS("2002", "Bu rol zaten mevcut."),
     
-    
+        // Token Exception
+	REFRESH_TOKEN_NOT_FOUND("3000", "Refresh token bulunamadı."),
+	REFRESH_TOKEN_EXPIRED("3001", "Refresh token süresi dolmuş.");
 	
 	
 	   private final String code;

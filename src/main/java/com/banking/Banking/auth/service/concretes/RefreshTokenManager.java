@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.banking.Banking.auth.model.RefreshToken;
 import com.banking.Banking.auth.repository.RefreshTokenRepository;
+import com.banking.Banking.exception.BusinessException;
+import com.banking.Banking.exception.ErrorCode;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,17 +30,23 @@ public class RefreshTokenManager {
 	        return refreshTokenRepository.save(token);
 	    }
 
-	    public boolean validate(String tokenId) {
-	        return refreshTokenRepository.findById(tokenId)
-	                .map(rt -> rt.getExpiry().isAfter(Instant.now()))
-	                .orElse(false);
+	 public void validateOrThrow(String tokenId) {
+		    RefreshToken token = findByIdOrThrow(tokenId);
+		    if (token.getExpiry().isBefore(Instant.now())) {
+		        throw new BusinessException(ErrorCode.REFRESH_TOKEN_EXPIRED);
+		    }
+		}
+	    
+	   
+	 public void revoke(String tokenId) {
+	        if (!refreshTokenRepository.existsById(tokenId)) {
+	            throw new BusinessException(ErrorCode.REFRESH_TOKEN_NOT_FOUND);
+	        }
+	        refreshTokenRepository.deleteById(tokenId);
 	    }
 	    
-	    public Optional<RefreshToken> findById(String tokenId) {
-	        return refreshTokenRepository.findById(tokenId);
-	    }
-
-	    public void revoke(String tokenId) {
-	        refreshTokenRepository.deleteById(tokenId);
+	    public RefreshToken findByIdOrThrow(String tokenId) {
+	        return refreshTokenRepository.findById(tokenId)
+	                .orElseThrow(() -> new BusinessException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
 	    }
 }

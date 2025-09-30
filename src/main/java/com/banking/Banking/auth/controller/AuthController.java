@@ -1,13 +1,9 @@
 package com.banking.Banking.auth.controller;
 
-import java.util.Optional;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +16,8 @@ import com.banking.Banking.auth.model.RefreshToken;
 import com.banking.Banking.auth.service.concretes.RefreshTokenManager;
 import com.banking.Banking.auth.service.concretes.TokenManager;
 import com.banking.Banking.entity.User;
+import com.banking.Banking.exception.BusinessException;
+import com.banking.Banking.exception.ErrorCode;
 import com.banking.Banking.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -49,22 +47,16 @@ public class AuthController {
 
 	    @PostMapping("/refresh")
 	    public ResponseEntity<?> refresh(@RequestBody RefreshRequest request) {
-	        Optional<RefreshToken> refreshTokenOpt = refreshTokenManager.findById(request.getRefreshToken());
-
-	        if (refreshTokenOpt.isEmpty() || !refreshTokenManager.validate(request.getRefreshToken())) {
-	            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-	        }
-
-	        RefreshToken refreshToken = refreshTokenOpt.get();
-
-	        
+	        refreshTokenManager.validateOrThrow(request.getRefreshToken());
+	        RefreshToken refreshToken = refreshTokenManager.findByIdOrThrow(request.getRefreshToken());
 	        User user = userRepository.findById(refreshToken.getUserId())
-	                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
+	                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 	        String newAccessToken = tokenService.generateAccessToken(user);
-
 	        return ResponseEntity.ok(new AuthResponse(newAccessToken, refreshToken.getId()));
 	    }
+
+	        
+	    
 
 	    @PostMapping("/logout")
 	    public ResponseEntity<?> logout(@RequestBody RefreshRequest request) {

@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.banking.Banking.entity.User;
+import com.banking.Banking.exception.BusinessException;
+import com.banking.Banking.exception.ErrorCode;
 import com.banking.Banking.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,7 @@ public class CustomUserDetailsService  implements UserDetailsService{
 	 @Override
 	    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 	        User user = userRepository.findByUsername(username)
-	                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+	                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
 	        return new org.springframework.security.core.userdetails.User(
 	                user.getUsername(),
