@@ -5,7 +5,6 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.context.annotation.Bean;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.RabbitMQContainer;
 import org.testcontainers.kafka.KafkaContainer;
 import org.testcontainers.utility.DockerImageName;
@@ -25,11 +24,7 @@ class TestcontainersConfiguration {
 		return new MongoDBContainer(DockerImageName.parse("mongo:latest"));
 	}
 
-	@Bean
-	@ServiceConnection
-	PostgreSQLContainer<?> postgresContainer() {
-		return new PostgreSQLContainer<>(DockerImageName.parse("postgres:latest"));
-	}
+	
 
 	@Bean
 	@ServiceConnection
@@ -42,5 +37,7 @@ class TestcontainersConfiguration {
 	GenericContainer<?> redisContainer() {
 		return new GenericContainer<>(DockerImageName.parse("redis:latest")).withExposedPorts(6379);
 	}
+	
+	
 
 }
