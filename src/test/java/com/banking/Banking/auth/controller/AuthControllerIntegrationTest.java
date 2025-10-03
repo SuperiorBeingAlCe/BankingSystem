@@ -22,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.banking.Banking.auth.config.TestKeyConfig;
@@ -37,6 +38,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SpringBootTest(properties = "spring.profiles.active=test")
 @AutoConfigureMockMvc
 @Import(TestKeyConfig.class)
+@ActiveProfiles("test")
 public class AuthControllerIntegrationTest {
 	
 	@Autowired
