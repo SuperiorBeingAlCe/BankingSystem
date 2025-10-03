@@ -123,6 +123,12 @@
       <scope>runtime</scope>
     </dependency>
 
+<dependency>
+    <groupId>com.h2database</groupId>
+    <artifactId>h2</artifactId>
+    <scope>test</scope>
+</dependency>
+
     <!-- Jackson (explicit version to match other libs) -->
     <dependency>
     <groupId>com.fasterxml.jackson.core</groupId>

@@ -17,12 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.banking.Banking.auth.config.TestKeyConfig;
 import com.banking.Banking.auth.dto.request.LoginRequest;
 import com.banking.Banking.auth.dto.request.RefreshRequest;
 import com.banking.Banking.auth.model.RefreshToken;
@@ -32,8 +34,9 @@ import com.banking.Banking.entity.User;
 import com.banking.Banking.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@SpringBootTest
+@SpringBootTest(properties = "spring.profiles.active=test")
 @AutoConfigureMockMvc
+@Import(TestKeyConfig.class)
 public class AuthControllerIntegrationTest {
 	
 	@Autowired
