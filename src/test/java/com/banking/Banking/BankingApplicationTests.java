@@ -5,13 +5,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
-@Import(TestcontainersConfiguration.class)
+import com.banking.Banking.auth.config.TestKeyConfig;
+
+	
 @SpringBootTest
-@ActiveProfiles("!test")
-class BankingApplicationTests {
-
-	@Test
-	void contextLoads() {
+@ActiveProfiles("test")
+@Import(TestKeyConfig.class)
+	class BankingApplicationTests {
+	
+		@Test
+		void contextLoads() {
+		}
+	
 	}
-
-}

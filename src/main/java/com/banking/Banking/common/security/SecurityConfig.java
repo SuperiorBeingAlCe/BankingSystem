@@ -1,15 +1,13 @@
 package com.banking.Banking.common.security;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.security.KeyFactory;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.X509EncodedKeySpec;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -63,13 +61,15 @@ public class SecurityConfig {
 	    }
 	    @Bean
 	    public JwtDecoder jwtDecoder() throws Exception {
-	        
-	        Path publicKeyPath = new ClassPathResource("jwt.pub").getFile().toPath(); 
-	        byte[] keyBytes = PemUtils.readKeyBytes(publicKeyPath);
+	        try (InputStream publicStream = getClass().getClassLoader().getResourceAsStream("jwt.pub")) {
+	            if (publicStream == null) {
+	                throw new FileNotFoundException("jwt.pub dosyası bulunamadı!");
+	            }
 
-	        RSAPublicKey publicKey = (RSAPublicKey) KeyFactory.getInstance("RSA")
-	                .generatePublic(new X509EncodedKeySpec(keyBytes));
+	            byte[] keyBytes = PemUtils.readKeyBytes(publicStream);
+	            RSAPublicKey publicKey = (RSAPublicKey) KeyFactory.getInstance("RSA")
+	                    .generatePublic(new X509EncodedKeySpec(keyBytes));
 
-	        return NimbusJwtDecoder.withPublicKey(publicKey).build();
-	    }
-	    }
+	            return NimbusJwtDecoder.withPublicKey(publicKey).build();
+	        }
+	    }}

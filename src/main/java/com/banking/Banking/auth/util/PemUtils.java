@@ -1,19 +1,19 @@
 package com.banking.Banking.auth.util;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Base64;
-
+import java.util.stream.Collectors;
 public class PemUtils {
-	
-	public static byte[] readKeyBytes(Path path) throws IOException {
-        String pem = Files.readString(path);
-        pem = pem
-                .replaceAll("-----BEGIN (.*)-----", "")
-                .replaceAll("-----END (.*)-----", "")
-                .replaceAll("\\s", "");
-        return Base64.getDecoder().decode(pem);
-    }
-	
+
+	 public static byte[] readKeyBytes(InputStream inputStream) throws IOException {
+	        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+	            String pem = reader.lines()
+	                    .filter(line -> !line.startsWith("-----BEGIN") && !line.startsWith("-----END"))
+	                    .collect(Collectors.joining());
+	            return Base64.getDecoder().decode(pem);
+	        }
+	    }
 }
